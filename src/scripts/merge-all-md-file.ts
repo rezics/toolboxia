@@ -291,9 +291,12 @@ const mergeAllMdFileCommand = defineCommand({
   run({args}) {
     const sortValue = args.sort as string;
     if (!VALID_SORTS.includes(sortValue as SortBy)) {
-      throw new Error(`Invalid sort type: ${sortValue}. Must be one of: ${VALID_SORTS.join(', ')}`);
+      throw new Error(
+        `Invalid sort type: ${sortValue}. Must be one of: ${VALID_SORTS.join(', ')}`,
+      );
     }
-    const out = args.out.trim() === '' ? path.join(args.root, 'merged.md') : args.out;
+    const out =
+      args.out.trim() === '' ? path.join(args.root, 'merged.md') : args.out;
     return main({
       root: args.root,
       out,

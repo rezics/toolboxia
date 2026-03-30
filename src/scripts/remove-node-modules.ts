@@ -47,7 +47,9 @@ const removeNodeModulesCommand = defineCommand({
     const targetDir = args.target;
     console.log(`Searching for node_modules in: ${targetDir}`);
     const deletedCount = removeNodeModules(targetDir);
-    console.log(`Cleanup complete. Removed ${deletedCount} node_modules directories.`);
+    console.log(
+      `Cleanup complete. Removed ${deletedCount} node_modules directories.`,
+    );
   },
 });
 

@@ -17,14 +17,17 @@ const commands: Record<string, CommandDef<any>> = {
 
 const commandEntries = Object.entries(commands).map(([name, cmd]) => ({
   name,
-  description: (typeof cmd.meta === 'object' && cmd.meta && 'description' in cmd.meta ? (cmd.meta as {description: string}).description : ''),
+  description:
+    typeof cmd.meta === 'object' && cmd.meta && 'description' in cmd.meta
+      ? (cmd.meta as {description: string}).description
+      : '',
 }));
 
 async function interactivePicker(): Promise<void> {
   try {
     const selected = await search<string>({
       message: 'Select a command',
-      source: (input) => {
+      source: input => {
         const term = (input ?? '').toLowerCase();
         return commandEntries
           .filter(
