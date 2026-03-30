@@ -2,16 +2,7 @@
 
 import {promises as fs} from 'node:fs';
 import path from 'node:path';
-import {
-  command,
-  flag,
-  number,
-  oneOf,
-  option,
-  run,
-  string,
-  type Type,
-} from 'cmd-ts';
+import {defineCommand, runMain} from 'citty';
 
 type SortBy = 'path' | 'name' | 'mtime' | 'ctime';
 
@@ -243,91 +234,82 @@ export async function main(options: MergeAllMdOptions): Promise<void> {
   console.log(`📄 输出：${outputPath}`);
 }
 
-export function cmd() {
-  return command({
+const VALID_SORTS = ['path', 'name', 'mtime', 'ctime'] as const;
+
+const mergeAllMdFileCommand = defineCommand({
+  meta: {
     name: 'merge-all-md-file',
-    args: {
-      root: option({
-        type: string,
-        long: 'root',
-        description: '根目录，默认当前目录',
-        defaultValue: () => '.',
-      }),
-      out: option({
-        type: string,
-        long: 'out',
-        description: '输出文件路径，默认 <root>/merged.md',
-        defaultValue: () => '',
-      }),
-      ext: option({
-        type: string,
-        long: 'ext',
-        description: '扩展名列表，逗号分隔',
-        defaultValue: () => '.md,.mdx',
-      }),
-      ignore: option({
-        type: string,
-        long: 'ignore',
-        description: '忽略目录，逗号分隔',
-        defaultValue: () => 'node_modules,.git,dist,build,out,.next',
-      }),
-      sort: option({
-        type: sortType,
-        long: 'sort',
-        description: '排序方式：path|name|mtime|ctime',
-        defaultValue: () => 'path' as SortBy,
-      }),
-      header: option({
-        type: string,
-        long: 'header',
-        description: '分节标题模板，支持 {relpath} {name}',
-        defaultValue: () => '## {relpath}',
-      }),
-      separator: option({
-        type: string,
-        long: 'separator',
-        description: '文件间分隔符',
-        defaultValue: () => '\n\n---\n\n',
-      }),
-      demote: option({
-        type: number,
-        long: 'demote',
-        description: '标题降级层数',
-        defaultValue: () => 0,
-      }),
-      toc: flag({
-        type: cmdBoolean,
-        long: 'toc',
-        description: '生成目录',
-        defaultValue: () => false,
-      }),
-    },
-    handler: async args => {
-      const out =
-        args.out.trim() === '' ? path.join(args.root, 'merged.md') : args.out;
-      await main({...args, out});
-    },
-  });
-}
-
-const cmdBoolean: Type<boolean, boolean> = {
-  async from(value: boolean): Promise<boolean> {
-    return value;
+    description: '递归合并 Markdown 文件到单个输出文件',
   },
-};
-
-if (import.meta.main) {
-  run(cmd(), process.argv.slice(2));
-}
-
-const sortType: Type<string, SortBy> = {
-  async from(str: string): Promise<SortBy> {
-    return new Promise((resolve, reject) => {
-      if (['path', 'name', 'mtime', 'ctime'].includes(str)) {
-        resolve(str as SortBy);
-      } else {
-        reject(new Error(`Invalid sort type: ${str}`));
-      }
+  args: {
+    root: {
+      type: 'string',
+      description: '根目录，默认当前目录',
+      default: '.',
+    },
+    out: {
+      type: 'string',
+      description: '输出文件路径，默认 <root>/merged.md',
+      default: '',
+    },
+    ext: {
+      type: 'string',
+      description: '扩展名列表，逗号分隔',
+      default: '.md,.mdx',
+    },
+    ignore: {
+      type: 'string',
+      description: '忽略目录，逗号分隔',
+      default: 'node_modules,.git,dist,build,out,.next',
+    },
+    sort: {
+      type: 'string',
+      description: '排序方式：path|name|mtime|ctime',
+      default: 'path',
+    },
+    header: {
+      type: 'string',
+      description: '分节标题模板，支持 {relpath} {name}',
+      default: '## {relpath}',
+    },
+    separator: {
+      type: 'string',
+      description: '文件间分隔符',
+      default: '\n\n---\n\n',
+    },
+    demote: {
+      type: 'string',
+      description: '标题降级层数',
+      default: '0',
+    },
+    toc: {
+      type: 'boolean',
+      description: '生成目录',
+      default: false,
+    },
+  },
+  run({args}) {
+    const sortValue = args.sort as string;
+    if (!VALID_SORTS.includes(sortValue as SortBy)) {
+      throw new Error(`Invalid sort type: ${sortValue}. Must be one of: ${VALID_SORTS.join(', ')}`);
+    }
+    const out = args.out.trim() === '' ? path.join(args.root, 'merged.md') : args.out;
+    return main({
+      root: args.root,
+      out,
+      ext: args.ext,
+      ignore: args.ignore,
+      sort: sortValue as SortBy,
+      header: args.header,
+      separator: args.separator,
+      demote: Number(args.demote),
+      toc: args.toc,
     });
   },
-};
+});
+
+export default mergeAllMdFileCommand;
+
+if (import.meta.main) {
+  runMain(mergeAllMdFileCommand);
+}

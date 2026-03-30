@@ -1,7 +1,7 @@
 {
   "name": "toolboxia",
   "version": "0.1.0",
-  "description": "A cmd-ts based script toolbox",
+  "description": "A citty-based script toolbox with interactive command picker",
   "type": "module",
   "module": "src/index.ts",
   "bin": {
@@ -26,7 +26,8 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "cmd-ts": "^0.15.0",
+    "@inquirer/search": "^4.1.6",
+    "citty": "^0.2.1",
     "yaml": "^2.8.2"
   }
 }
