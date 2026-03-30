@@ -6,6 +6,7 @@ import {fileURLToPath} from 'url';
 import {defineCommand, runMain} from 'citty';
 import search from '@inquirer/search';
 import {parse as parseYaml} from 'yaml';
+import clipboardy from 'clipboardy';
 import {configDir} from '../../config/index.js';
 
 interface PromptEntry {
@@ -112,7 +113,10 @@ async function main(): Promise<void> {
 
   const content = await readFile(selected, 'utf-8');
   const {body} = extractMetadata(content, basename(selected));
-  console.log(body.trim());
+  const trimmed = body.trim();
+  await clipboardy.write(trimmed);
+  console.log(trimmed);
+  console.log('\nCopied to clipboard.');
 }
 
 const command = defineCommand({

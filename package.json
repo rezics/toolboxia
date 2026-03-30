@@ -1,6 +1,6 @@
 {
   "name": "toolboxia",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A citty-based script toolbox with interactive command picker",
   "type": "module",
   "module": "src/index.ts",
@@ -17,17 +17,18 @@
     "dev": "bun run src/index.ts",
     "cli": "bun run src/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "build": "tsc -p tsconfig.build.json",
+    "copy-assets": "bun run src/utils/copy-assets.ts",
+    "build": "tsc -p tsconfig.build.json && bun run copy-assets",
     "start": "node dist/index.js"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/node": "^22.15.30",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "@inquirer/search": "^4.1.6",
     "citty": "^0.2.1",
+    "clipboardy": "^5.3.1",
     "env-paths": "^4.0.0",
     "yaml": "^2.8.2"
   }
