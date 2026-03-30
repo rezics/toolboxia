@@ -56,7 +56,7 @@ const main = defineCommand({
   meta: {
     name: 'toolboxia',
     version: '0.1.0',
-    description: '脚本工具集合',
+    description: 'Script toolbox collection',
   },
   subCommands: commands,
   run() {

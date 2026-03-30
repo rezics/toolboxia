@@ -15,7 +15,7 @@ function removeNodeModules(dir: string): number {
 
       if (stats.isDirectory()) {
         if (file === 'node_modules') {
-          console.log(`正在删除: ${fullPath}`);
+          console.log(`Deleting: ${fullPath}`);
           rmSync(fullPath, {recursive: true, force: true});
           deletedCount++;
         } else {
@@ -25,7 +25,7 @@ function removeNodeModules(dir: string): number {
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error(`访问目录 ${dir} 时出错: ${error.message}`);
+      console.error(`Error accessing directory ${dir}: ${error.message}`);
     }
   }
   return deletedCount;
@@ -34,20 +34,20 @@ function removeNodeModules(dir: string): number {
 const removeNodeModulesCommand = defineCommand({
   meta: {
     name: 'remove-node-modules',
-    description: '递归删除目录中的所有 node_modules 文件夹',
+    description: 'Recursively remove all node_modules folders in a directory',
   },
   args: {
     target: {
       type: 'positional',
-      description: '目标目录，默认当前目录',
+      description: 'Target directory, defaults to current directory',
       default: process.cwd(),
     },
   },
   run({args}) {
     const targetDir = args.target;
-    console.log(`开始在目录中搜索 node_modules: ${targetDir}`);
+    console.log(`Searching for node_modules in: ${targetDir}`);
     const deletedCount = removeNodeModules(targetDir);
-    console.log(`清理完成。共删除 ${deletedCount} 个 node_modules 目录。`);
+    console.log(`Cleanup complete. Removed ${deletedCount} node_modules directories.`);
   },
 });
 

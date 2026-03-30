@@ -52,7 +52,7 @@ export async function main(): Promise<void> {
 const treeToYamlCommand = defineCommand({
   meta: {
     name: 'tree-to-yaml',
-    description: '生成当前 git 仓库的文件树，并输出为 tree.yaml',
+    description: 'Generate the file tree of the current git repository and output as tree.yaml',
   },
   args: {},
   run() {

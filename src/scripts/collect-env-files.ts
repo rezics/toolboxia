@@ -14,7 +14,7 @@ function collectEnvFiles(dir: string, resolvedTarget: string, outputDir: string)
     entries = readdirSync(dir);
   } catch (error) {
     if (error instanceof Error) {
-      console.error(`无法访问目录 ${dir}: ${error.message}`);
+      console.error(`Unable to access directory ${dir}: ${error.message}`);
     }
     return 0;
   }
@@ -35,7 +35,7 @@ function collectEnvFiles(dir: string, resolvedTarget: string, outputDir: string)
       const dest = join(outputDir, rel);
       mkdirSync(dirname(dest), {recursive: true});
       copyFileSync(fullPath, dest);
-      console.log(`已复制: ${rel}`);
+      console.log(`Copied: ${rel}`);
       collectedCount++;
     }
   }
@@ -46,12 +46,12 @@ function collectEnvFiles(dir: string, resolvedTarget: string, outputDir: string)
 const collectEnvFilesCommand = defineCommand({
   meta: {
     name: 'collect-env-files',
-    description: '递归收集项目中的 .env 文件到独立目录',
+    description: 'Recursively collect .env files from the project into a separate directory',
   },
   args: {
     target: {
       type: 'positional',
-      description: '目标目录，默认当前目录',
+      description: 'Target directory, defaults to current directory',
       default: process.cwd(),
     },
   },
@@ -61,12 +61,12 @@ const collectEnvFilesCommand = defineCommand({
     const outputDir = join(dirname(resolvedTarget), `${projectName}-envfolder`);
 
     if (!existsSync(resolvedTarget)) {
-      console.error(`目录不存在: ${resolvedTarget}`);
+      console.error(`Directory not found: ${resolvedTarget}`);
       process.exit(1);
     }
 
-    console.log(`项目目录: ${resolvedTarget}`);
-    console.log(`输出目录: ${outputDir}`);
+    console.log(`Project directory: ${resolvedTarget}`);
+    console.log(`Output directory: ${outputDir}`);
     console.log('');
 
     mkdirSync(outputDir, {recursive: true});
@@ -74,9 +74,9 @@ const collectEnvFilesCommand = defineCommand({
 
     console.log('');
     if (collectedCount === 0) {
-      console.log('未找到任何 .env 文件。');
+      console.log('No .env files found.');
     } else {
-      console.log(`完成，共收集 ${collectedCount} 个 env 文件到 ${outputDir}`);
+      console.log(`Done. Collected ${collectedCount} env files to ${outputDir}`);
     }
   },
 });

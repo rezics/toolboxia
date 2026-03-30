@@ -222,7 +222,7 @@ export async function main(options: MergeAllMdOptions): Promise<void> {
   let output = parts.join(separator);
   if (options.toc) {
     const toc =
-      '# 合并目录（TOC）\n\n' +
+      '# Table of Contents\n\n' +
       tocItems.map(item => `- [${item.title}](#${item.id})`).join('\n') +
       '\n\n---\n\n';
     output = `${toc}${output}`;
@@ -230,8 +230,8 @@ export async function main(options: MergeAllMdOptions): Promise<void> {
 
   await fs.writeFile(outputPath, output, 'utf8');
 
-  console.log(`✅ 已合并 ${files.length} 个文件。`);
-  console.log(`📄 输出：${outputPath}`);
+  console.log(`Merged ${files.length} files.`);
+  console.log(`Output: ${outputPath}`);
 }
 
 const VALID_SORTS = ['path', 'name', 'mtime', 'ctime'] as const;
@@ -239,52 +239,52 @@ const VALID_SORTS = ['path', 'name', 'mtime', 'ctime'] as const;
 const mergeAllMdFileCommand = defineCommand({
   meta: {
     name: 'merge-all-md-file',
-    description: '递归合并 Markdown 文件到单个输出文件',
+    description: 'Recursively merge Markdown files into a single output file',
   },
   args: {
     root: {
       type: 'string',
-      description: '根目录，默认当前目录',
+      description: 'Root directory, defaults to current directory',
       default: '.',
     },
     out: {
       type: 'string',
-      description: '输出文件路径，默认 <root>/merged.md',
+      description: 'Output file path, defaults to <root>/merged.md',
       default: '',
     },
     ext: {
       type: 'string',
-      description: '扩展名列表，逗号分隔',
+      description: 'Extension list, comma-separated',
       default: '.md,.mdx',
     },
     ignore: {
       type: 'string',
-      description: '忽略目录，逗号分隔',
+      description: 'Directories to ignore, comma-separated',
       default: 'node_modules,.git,dist,build,out,.next',
     },
     sort: {
       type: 'string',
-      description: '排序方式：path|name|mtime|ctime',
+      description: 'Sort method: path|name|mtime|ctime',
       default: 'path',
     },
     header: {
       type: 'string',
-      description: '分节标题模板，支持 {relpath} {name}',
+      description: 'Section header template, supports {relpath} {name}',
       default: '## {relpath}',
     },
     separator: {
       type: 'string',
-      description: '文件间分隔符',
+      description: 'Separator between files',
       default: '\n\n---\n\n',
     },
     demote: {
       type: 'string',
-      description: '标题降级层数',
+      description: 'Heading demotion levels',
       default: '0',
     },
     toc: {
       type: 'boolean',
-      description: '生成目录',
+      description: 'Generate table of contents',
       default: false,
     },
   },
