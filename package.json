@@ -1,0 +1,32 @@
+{
+  "name": "toolboxia",
+  "version": "0.1.0",
+  "description": "A cmd-ts based script toolbox",
+  "type": "module",
+  "module": "src/index.ts",
+  "bin": {
+    "toolboxia": "./src/index.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "cli": "bun run src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^22.15.30",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "cmd-ts": "^0.15.0",
+    "yaml": "^2.8.2"
+  }
+}
