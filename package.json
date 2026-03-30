@@ -1,6 +1,6 @@
 {
   "name": "toolboxia",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A citty-based script toolbox with interactive command picker",
   "type": "module",
   "module": "src/index.ts",
