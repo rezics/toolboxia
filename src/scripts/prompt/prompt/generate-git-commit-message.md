@@ -1,3 +1,7 @@
+---
+description: Generate a conventional commit message from staged git changes
+---
+
 Your task is to help the user to generate a commit message and commit the changes using git.
 
 

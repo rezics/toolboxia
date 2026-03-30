@@ -28,6 +28,7 @@
   "dependencies": {
     "@inquirer/search": "^4.1.6",
     "citty": "^0.2.1",
+    "env-paths": "^4.0.0",
     "yaml": "^2.8.2"
   }
 }
