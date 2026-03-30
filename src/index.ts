@@ -2,10 +2,10 @@
 
 import {defineCommand, runMain, runCommand, type CommandDef} from 'citty';
 import search from '@inquirer/search';
-import mergeAllMdFile from './scripts/merge-all-md-file.ts';
-import treeToYaml from './scripts/tree-to-yaml.ts';
-import collectEnvFiles from './scripts/collect-env-files.ts';
-import removeNodeModules from './scripts/remove-node-modules.ts';
+import mergeAllMdFile from './scripts/merge-all-md-file.js';
+import treeToYaml from './scripts/tree-to-yaml.js';
+import collectEnvFiles from './scripts/collect-env-files.js';
+import removeNodeModules from './scripts/remove-node-modules.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const commands: Record<string, CommandDef<any>> = {
